@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Spyder Editor
-
-This is a temporary script file.
-"""
 import numpy as np
 from gensim import corpora, models
 import pandas as pd
@@ -32,8 +26,6 @@ for i in range(50,90):
     print('traning %s-topic model' % (i+1))
     train_lda_model_gensim(training_set,dictionary,i+1)
 
-
-##############################################################
 from sklearn.metrics import pairwise_distances
 from scipy.stats import entropy
 from scipy.spatial.distance import cosine
@@ -53,7 +45,7 @@ product_id =[]
 product_id=np.loadtxt('H:\MineCos\Data\Sunscreen with product type.csv',dtype=str,
                      delimiter=',',skiprows=1,usecols=(0))
 
-
+#Similarity matrix
 for i in range(50,90):
     doc_ldas = []
     lda = models.ldamodel.LdaModel.load('H:\\MineCos/Topic Models\TopicModels_func/model_%02dt.lda'% (i+1))

@@ -89,8 +89,7 @@ for i in range(90):
                         columns=['Product '+product_id[k] for k in range( len(SimMat_cos))] ) 
     
     #save results into excel
-    writer = pd.ExcelWriter('H:\
-    \Similarity Matrix\%02dT_cos.xlsx' % (i+1))
+    writer = pd.ExcelWriter('H:\Similarity Matrix\%02dT_cos.xlsx' % (i+1))
     SimMat_cos.to_excel(writer,'Sheet1')
     writer.save()
     print('SimMat %02d is saved')% (i+1)

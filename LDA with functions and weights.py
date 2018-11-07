@@ -6,12 +6,12 @@ import pandas as pd
 import csv
 
 training_set = []
-with open('H:\\MineCos\\Data\\Ing Fact_SS.csv') as csvfile:
+with open('H:\\Data\\Ing Fact_SS.csv') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         training_set.append((row['\xef\xbb\xbfIngredient'],row['Functions']) )
 dictionary = corpora.Dictionary(training_set)
-dictionary.save('H:\\MineCos\\Dictionary/Training_Ing Facts.dict')
+dictionary.save('H:\\Dictionary/Training_Ing Facts.dict')
 
 
 
@@ -20,7 +20,7 @@ def train_lda_model_gensim(corpus, dictionary, total_topics=10):
     Lda = models.ldamodel.LdaModel
     ldamodel = Lda(doc_term_matrix, num_topics=total_topics, 
                    iterations=1000, id2word = dictionary, passes=50)
-    ldamodel.save('H:\\MineCos\\TopicModels_func/model_%02dt.lda' % total_topics)
+    ldamodel.save('H:\\TopicModels_func/model_%02dt.lda' % total_topics)
     return ldamodel
 
 #Training
@@ -40,24 +40,24 @@ def _weighted(tup,index):
     return (tup[0],tup[1]*weight)
 
 testing_set = []
-with open('H:\MineCos\Data\Sunscreen with product type.csv') as csvfile:
+with open('H:\\Data\Sunscreen with product type.csv') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         testing_set.append(( row['receipe 1'],row['receipe 2'],row['receipe 3'],
                              row['receipe 4'],row['receipe 5'], row['receipe 6'],
                              row['receipe 7'], row['receipe 8'],row['receipe 9'])) 
 dictionary = corpora.Dictionary(testing_set)
-dictionary.save('H:\\MineCos\\Dictionary/Testing_8ing.dict')
+dictionary.save('H:\\Dictionary/Testing_8ing.dict')
 
 #Evaluating
 product_id =[]
-product_id=np.loadtxt('H:\MineCos\Data\Sunscreen with product type.csv',dtype=str,
+product_id=np.loadtxt('H:\Data\Sunscreen with product type.csv',dtype=str,
                      delimiter=',',skiprows=1,usecols=(0))
 
 
 for i in range(90):
     doc_ldas = []
-    lda = models.ldamodel.LdaModel.load('H:\\MineCos/Topic Models\TopicModels_func/model_%02dt.lda'% (i+1))
+    lda = models.ldamodel.LdaModel.load('H:\\Topic Models\TopicModels_func/model_%02dt.lda'% (i+1))
     for doc in testing_set:   
         temp = [0] * (i + 1)
         bow = [_weighted(tup,index) for index,tup in enumerate(dictionary.doc2bow(doc))]
@@ -89,7 +89,8 @@ for i in range(90):
                         columns=['Product '+product_id[k] for k in range( len(SimMat_cos))] ) 
     
     #save results into excel
-    writer = pd.ExcelWriter('H:\MineCos\Similarity Matrix\%02dT_cos.xlsx' % (i+1))
+    writer = pd.ExcelWriter('H:\
+    \Similarity Matrix\%02dT_cos.xlsx' % (i+1))
     SimMat_cos.to_excel(writer,'Sheet1')
     writer.save()
     print('SimMat %02d is saved')% (i+1)
